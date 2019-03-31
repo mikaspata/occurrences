@@ -1,0 +1,56 @@
+[
+    {
+        "model": "api.occurencestate",
+        "pk": 1,
+        "fields": {
+            "description": "por validar"
+        }
+    }, {
+        "model": "api.occurencestate",
+        "pk": 2,
+        "fields": {
+            "description": "validado"
+        }
+    }, {
+        "model": "api.occurencestate",
+        "pk": 3,
+        "fields": {
+            "description": "resolvido"
+        }
+    }, {
+        "model": "api.occurencecategory",
+        "pk": 1,
+        "fields": {
+            "label": "CONSTRUCTION",
+            "description": "planned road work"
+        }
+    }, {
+        "model": "api.occurencecategory",
+        "pk": 2,
+        "fields": {
+            "label": "SPECIAL_EVENT",
+            "description": "special events (fair, sport event, etc.)"
+        }
+    }, {
+        "model": "api.occurencecategory",
+        "pk": 3,
+        "fields": {
+            "label": "INCIDENT",
+            "description": "accidents and other unexpected events"
+        }
+    }, {
+        "model": "api.occurencecategory",
+        "pk": 4,
+        "fields": {
+            "label": "WEATHER_CONDITION",
+            "description": "weather condition affecting the road"
+        }
+    }, {
+        "model": "api.occurencecategory",
+        "pk": 5,
+        "fields": {
+            "label": "ROAD_CONDITION",
+            "description": "status of the road that might affect travellers (potholes, bad pavement, etc.)"
+        }
+    }
+]
