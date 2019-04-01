@@ -1,11 +1,11 @@
-# Pre-Requisites:
+# Pré-Requisitos:
 * **Iniciar o docker:** sudo docker-compose up
 * **Correr as migrações (modelo de dados):** sudo docker-compose run app python manage.py migrate
 * **Aplicar alterações na base de dados:** sudo docker-compose run app python manage.py makemigrations
 * **Criar utilizador super (administrador de sistema):** sudo docker-compose run app python manage.py createsuperuser
 * **Inserir dados na base de dados para tabelas de estados e categorias:** sudo docker-compose run app python manage.py loaddata data_to_db.json
 
-# Run Docker:
+# Arrancar o Docker:
 **sudo docker-compose up**
 
 # API:
