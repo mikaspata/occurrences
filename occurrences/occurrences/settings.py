@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'gis',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'db',
+        'HOST': 'localhost',#'db',
         'PORT': '5432'
     }
 }
@@ -137,3 +137,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')
