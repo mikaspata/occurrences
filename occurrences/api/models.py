@@ -1,5 +1,8 @@
+import datetime
+
 from django.db import models
 from django.contrib.gis.db import models as gis_models
+from django.contrib.auth.models import User
 
 
 class OccurenceState(models.Model):
@@ -31,8 +34,8 @@ class OccurenceCategory(models.Model):
 
 class Occurence(models.Model):
     description = models.CharField(max_length=200)
-    geo_location = gis_models.PointField()
-    author = models.CharField(max_length=200)
+    geo_location = gis_models.PointField(null=True, blank=True)
+    author = models.ForeignKey(User, null=True, blank=True)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
     occurence_state = models.ForeignKey(OccurenceState, on_delete=models.DO_NOTHING)

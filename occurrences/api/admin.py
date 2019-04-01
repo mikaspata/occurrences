@@ -1,5 +1,6 @@
+import datetime
+
 from django.contrib import admin
-from django.utils import timezone
 
 from api.models import Occurence, OccurenceState
 
@@ -24,13 +25,13 @@ class OccurenceAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if not obj.pk:
-            obj.creation_date = timezone.now()
+            obj.creation_date = datetime.datetime.now()
             obj.occurence_state_id = OccurenceState.objects.get(
                                         description='por validar').id
         else:
             obj.occurence_state = form.cleaned_data['occurence_state']
         
-        obj.modified_date = timezone.now()
+        obj.modified_date = datetime.datetime.now()
         
         super(OccurenceAdmin, self).save_model(request, obj, form, change)
 

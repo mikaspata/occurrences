@@ -1,6 +1,7 @@
+import datetime
 from rest_framework import serializers
 
-from django.utils import timezone
+from django.contrib.auth.models import User
 
 from api.models import Occurence, OccurenceState, \
     OccurenceCategory
@@ -17,14 +18,25 @@ class OccurenceStateSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=200)
 
 
+class AuthorSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    first_name = serializers.CharField(max_length=30)
+    last_name = serializers.CharField(max_length=30)
+
+
 class OccurenceSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     description = serializers.CharField(
         max_length=200, 
         required=False
     )
-    geo_location = serializers.CharField()
-    author = serializers.CharField(max_length=200)
+    geo_location = serializers.CharField(required=False)
+    author_id = serializers.PrimaryKeyRelatedField(
+        source='author', 
+        queryset=User.objects.all(),
+        required=False
+    )
+    author = AuthorSerializer(read_only=True)
     creation_date = serializers.DateTimeField(
         format="%Y-%m-%d %H:%M:%S", 
         required=False, 
@@ -48,15 +60,15 @@ class OccurenceSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         validated_data.update({
-            'creation_date': timezone.now(),
-            'modified_date': timezone.now(),
+            'creation_date': datetime.datetime.now(),
+            'modified_date': datetime.datetime.now(),
             'occurence_state_id': OccurenceState.objects.get(description='por validar')\
-                                                        .id
+                                                        .id,
         })
         return Occurence.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        instance.modified_date = timezone.now()
+        instance.modified_date = datetime.datetime.now()
         instance.occurence_state = validated_data.get('occurence_state')
         instance.save()
         return instance

@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAdminUser
 from django.shortcuts import get_object_or_404
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
+from django.contrib.gis.geoip2 import GeoIP2
 
 from api.models import Occurence
 from api.serializers import OccurenceSerializer
@@ -27,26 +28,23 @@ class OccurenceView(APIView):
         lng = self.request.query_params.get('longitude', None)
         radius = self.request.query_params.get('radius', None)
         if lat is not None and lng is not None and radius is not None:
-            queryset = queryset.filter(geo_location__distance_lt=(Point(float(lng), float(lat)), 
-                                                                  Distance(m=radius)))
+            queryset = queryset.filter(geo_location__distance_lt=(Point(float(lat), float(lng)), 
+                                                                  Distance(km=radius)))
 
         serializer = OccurenceSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        lat = request.data.get('latitude', "0")
-        lng = request.data.get('longitude', "0")
-        try:
-            float(lng)
-        except:
-            raise ValidationError({'longitude': ['this field is not valid']})
+        ip = request.META.get('REMOTE_ADDR', None)
+        if ip:
+            try:
+                g = GeoIP2()
+                request.data['geo_location'] = str(Point(g.lat_lon(ip)))
+            except:
+                pass
 
-        try:
-            float(lat)
-        except:
-            raise ValidationError({'latitude': ['this field is not valid']})
-
-        request.data['geo_location'] = str(Point(float(lng), float(lat)))
+        if request.user.is_authenticated():
+            request.data['author_id'] = request.user.id
 
         serializer = OccurenceSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
