@@ -10,7 +10,7 @@
 
 # API:
 ## Occurrences
-* Retorna a lista de ocorrências criadas, ordenadas por data de modificação. As ocorrências podem ser filtradas por autor, categoria ou localização (latitude + longitude + raio de alcance).
+* Retorna a lista de ocorrências criadas, ordenadas por data de modificação. As ocorrências podem ser filtradas por autor, categoria ou localização (latitude + longitude + raio de alcance). Também permite a criação de uma nova ocorrência.
 ### Métodos suportados
 Método | URL | Descrição
 ------------ | ------------- | -------------
@@ -59,3 +59,53 @@ Content-Type: application/json;charset=UTF-8
     }
 ]
 ```
+
+#### POST
+Atributo | Tipo | Descrição
+------------ | ------------- | -------------
+description | Texto | Descrição da ocorrência.
+occurence_category_id | Número | Identificador único da categoria da ocorrência.
+
+```json
+POST /occurences/
+{
+    "description": "test001",
+    "occurence_category_id": 1,
+}
+-----------------------------------------------
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+{
+    "success": "Occurence test001 created successfully"
+}
+```
+
+## Occurrences update
+* Permite a alteração de uma ocorrência já existente. Apenas pode ser alterado o estado da mesma e por um administrador do sistema (superuser).
+
+### Métodos suportados
+Método | URL | Descrição
+------------ | ------------- | -------------
+PUT | /occurences/id/ | Envia um objecto com o estado da ocorrência a editar.
+
+### Pedido / Resposta
+#### PUT
+Atributo | Tipo | Descrição
+------------ | ------------- | -------------
+occurence_state_id | Número | Identificador único do estado da ocorrência.
+
+```json
+POST /occurences/
+{
+    "occurence_state_id": 2,
+}
+-----------------------------------------------
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+{
+    "success": "Occurence test001 updated successfully"
+}
+```
+
+# ADMIN 
+Esta aplicação também disponibiliza o portal para o administrador do sistema. Pode com isso criar, editar ou ver ocorrências.
